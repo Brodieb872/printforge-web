@@ -1,4 +1,4 @@
-ï»¿---
+---
 import Layout from "../layouts/Layout.astro";
 import home from "../content/home.json";
 
@@ -11,8 +11,7 @@ const { brand, nav, hero, services } = home;
     <div class="container">
       <div class="header-inner">
         <a href="#" class="logo">
-          <span class="logo-mark">{brand.pill}</span>
-          <span class="logo-text">{brand.logoText}</span>
+          <img src="/printforge-logo.png" alt="PrintForge logo" class="logo-img" />
         </a>
 
         <nav class="main-nav">
@@ -100,7 +99,7 @@ const { brand, nav, hero, services } = home;
           <div>
             <h2>Ready to talk about a job?</h2>
             <p>
-              Send through some details about your project and weâ€™ll come back
+              Send through some details about your project and we’ll come back
               with options.
             </p>
           </div>
@@ -123,20 +122,20 @@ const { brand, nav, hero, services } = home;
       <div class="footer-inner">
         <div>
           <div class="logo">
-            <span class="logo-mark">{brand.pill}</span>
-            <span class="logo-text">{brand.logoText}</span>
+            <img src="/printforge-logo.png" alt="PrintForge logo" class="logo-img" />
           </div>
           <p class="footer-note">
-            Staging site for PrintForge â€“ content managed via home.json.
+            Staging site for PrintForge – content managed via home.json.
           </p>
         </div>
 
         <div class="footer-links">
           <a href="mailto:info@printforge.co.nz">info@printforge.co.nz</a>
-          <span>â€¢</span>
+          <span>•</span>
           <span>Tauranga, New Zealand</span>
         </div>
       </div>
     </div>
   </footer>
 </Layout>
+
