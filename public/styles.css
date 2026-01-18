@@ -453,3 +453,9 @@ body {
   transform: translateZ(0);
 }
 
+
+/* Hero overlay: strengthen contrast */
+.hero::before {
+  background: linear-gradient(rgba(5,7,11,0.82), rgba(5,7,11,0.6) 35%, rgba(5,7,11,0.2));
+}
+
