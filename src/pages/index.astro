@@ -1,0 +1,142 @@
+﻿---
+import Layout from "../layouts/Layout.astro";
+import home from "../content/home.json";
+
+const { brand, nav, hero, services } = home;
+---
+
+<Layout title={home.siteTitle}>
+  {/* HEADER / NAV */}
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="#" class="logo">
+          <span class="logo-mark">{brand.pill}</span>
+          <span class="logo-text">{brand.logoText}</span>
+        </a>
+
+        <nav class="main-nav">
+          {nav.map((item) => (
+            <a href={item.href}>{item.label}</a>
+          ))}
+        </nav>
+
+        <a class="btn btn-small btn-outline-light" href="#quote">
+          Get a quote
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    {/* HERO */}
+    <section class="section hero" id="top">
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="hero-tag">
+              <span>Staging preview</span>
+            </p>
+
+            <h1>{hero.heading}</h1>
+            <p>{hero.subheading}</p>
+
+            <div class="hero-actions">
+              <a class="btn" href={hero.primaryButton.href}>
+                {hero.primaryButton.label}
+              </a>
+              <a class="btn btn-secondary" href={hero.secondaryButton.href}>
+                {hero.secondaryButton.label}
+              </a>
+            </div>
+
+            <ul class="hero-highlights">
+              {hero.highlights.map((line) => (
+                <li>{line}</li>
+              ))}
+            </ul>
+          </div>
+
+          <aside class="hero-panel">
+            <div class="hero-card">
+              <span class="hero-tag">Typical jobs we run</span>
+              <h2>Examples</h2>
+              <ul>
+                <li>Custom HVAC and marine components</li>
+                <li>One-off replacement parts &amp; adapters</li>
+                <li>Small run product batches &amp; jigs</li>
+                <li>Concept models for buildings &amp; structures</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    {/* SERVICES */}
+    <section class="section section-alt" id="services">
+      <div class="container">
+        <h2>Services</h2>
+        <div class="cards-3">
+          {services.map((svc) => (
+            <article class="card">
+              <h3>{svc.title}</h3>
+              <p>{svc.description}</p>
+              <ul class="card-list">
+                {svc.bullets.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* CTA */}
+    <section class="section section-accent" id="quote">
+      <div class="container">
+        <div class="cta">
+          <div>
+            <h2>Ready to talk about a job?</h2>
+            <p>
+              Send through some details about your project and we’ll come back
+              with options.
+            </p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-light" href="mailto:info@printforge.co.nz">
+              Email your job details
+            </a>
+            <a class="btn btn-outline-light" href="#contact">
+              Chat about a concept
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {/* FOOTER */}
+  <footer class="site-footer" id="contact">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="logo">
+            <span class="logo-mark">{brand.pill}</span>
+            <span class="logo-text">{brand.logoText}</span>
+          </div>
+          <p class="footer-note">
+            Staging site for PrintForge – content managed via home.json.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <a href="mailto:info@printforge.co.nz">info@printforge.co.nz</a>
+          <span>•</span>
+          <span>Tauranga, New Zealand</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</Layout>

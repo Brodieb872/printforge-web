@@ -1,0 +1,62 @@
+﻿{
+  "siteTitle": "PrintForge – Commercial 3D printing & laser cutting in NZ",
+  "brand": {
+    "pill": "PF",
+    "logoText": "PrintForge"
+  },
+  "nav": [
+    { "label": "Home",       "href": "#" },
+    { "label": "Services",   "href": "#services" },
+    { "label": "Get a Quote","href": "#quote" },
+    { "label": "Book a Consult", "href": "#consult" },
+    { "label": "Small Items","href": "#small-items" },
+    { "label": "About",      "href": "#about" },
+    { "label": "Contact",    "href": "#contact" }
+  ],
+  "hero": {
+    "heading": "Commercial 3D printing & laser cutting in NZ.",
+    "subheading": "PrintForge specialises in functional parts, custom one-offs, and 3D printed building components – built for real-world use, not just display.",
+    "primaryButton": {
+      "label": "Get a project quote",
+      "href": "#quote"
+    },
+    "secondaryButton": {
+      "label": "Book a 15-min consult",
+      "href": "#consult"
+    },
+    "highlights": [
+      "Functional industrial parts & brackets",
+      "Laser cut panels, signage & enclosures",
+      "3D printed buildings & architectural components"
+    ]
+  },
+  "services": [
+    {
+      "title": "3D Printing",
+      "description": "High-quality 3D printing for functional parts, prototypes and low-volume production.",
+      "bullets": [
+        "Engineering-grade plastics",
+        "Brackets, jigs & fixtures",
+        "Custom adapters & replacement components"
+      ]
+    },
+    {
+      "title": "Laser Cutting",
+      "description": "Precision cutting and engraving for panels, signage, control plates and small enclosures.",
+      "bullets": [
+        "Panels & fascia plates",
+        "Labels, tags & small signage",
+        "Engraved markings & branding"
+      ]
+    },
+    {
+      "title": "3D Printed Buildings",
+      "description": "3D printed building components and concept models for architectural and construction use.",
+      "bullets": [
+        "Concept models & site layouts",
+        "Custom components & brackets",
+        "Quick iteration before full-scale build"
+      ]
+    }
+  ]
+}

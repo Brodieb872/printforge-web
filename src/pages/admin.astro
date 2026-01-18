@@ -1,0 +1,381 @@
+﻿---
+import home from "../content/home.json";
+
+const initialJson = JSON.stringify(home, null, 2);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PrintForge admin – home editor</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .admin-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+        gap: 1.5rem;
+        align-items: flex-start;
+      }
+      .admin-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1.25rem 1.4rem;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        box-shadow: var(--shadow-soft);
+      }
+      .admin-card h2 {
+        margin-top: 0;
+      }
+      .admin-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+      }
+      .admin-field label {
+        color: var(--muted);
+      }
+      .admin-field input,
+      .admin-field textarea {
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #020617;
+        color: var(--text);
+        padding: 0.45rem 0.6rem;
+        font: inherit;
+        resize: vertical;
+      }
+      .admin-field textarea.small {
+        min-height: 3.2rem;
+      }
+      .admin-field textarea.medium {
+        min-height: 5rem;
+      }
+      #jsonOutput {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 0.8rem;
+        min-height: 24rem;
+      }
+      .admin-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+      }
+      .nav-item-card {
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        padding: 0.7rem 0.8rem 0.8rem;
+        margin-bottom: 0.5rem;
+        background: #020617;
+      }
+      .nav-item-header {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 0.2rem;
+      }
+      @media (max-width: 900px) {
+        .admin-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo">
+          <span class="logo-mark">PF</span>
+          <span class="logo-text">PrintForge Admin</span>
+        </div>
+        <span style="color: var(--muted); font-size: 0.85rem;">
+          Home content editor (JSON-based)
+        </span>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container">
+        <h1 style="margin-top: 0;">Home page editor</h1>
+        <p style="color: var(--muted); max-width: 40rem; font-size: 0.9rem;">
+          This page edits the content used on the staging homepage. Adjust the fields on the
+          left, then download the updated <code>home.json</code> on the right and replace
+          <code>src/content/home.json</code> in your project or repository.
+        </p>
+
+        <div class="admin-grid" style="margin-top: 1.5rem;">
+          <!-- LEFT COLUMN: NAV + HERO + SERVICES -->
+          <section class="admin-card">
+            <!-- Navigation -->
+            <h2>Navigation</h2>
+            <p style="color: var(--muted); font-size: 0.8rem; margin-top: 0;">
+              These items drive the main navigation bar on the site.
+            </p>
+
+            {(home.nav || []).map((item, index) => (
+              <div class="nav-item-card">
+                <div class="nav-item-header">Item {index + 1}</div>
+                <div class="admin-field">
+                  <label for={`nav-label-${index}`}>Label</label>
+                  <input
+                    id={`nav-label-${index}`}
+                    type="text"
+                    value={item.label}
+                  />
+                </div>
+                <div class="admin-field">
+                  <label for={`nav-href-${index}`}>Href / link</label>
+                  <input
+                    id={`nav-href-${index}`}
+                    type="text"
+                    value={item.href}
+                  />
+                </div>
+              </div>
+            ))}
+
+            <hr style="border-color: rgba(148,163,184,0.3); margin: 1.1rem 0;" />
+
+            <!-- Hero + CTA -->
+            <h2>Hero &amp; CTA</h2>
+
+            <div class="admin-field">
+              <label for="hero-heading">Hero heading</label>
+              <input id="hero-heading" type="text" value={home.hero.heading} />
+            </div>
+
+            <div class="admin-field">
+              <label for="hero-subheading">Hero subheading</label>
+              <textarea
+                id="hero-subheading"
+                class="medium"
+              >
+{home.hero.subheading}
+              </textarea>
+            </div>
+
+            <div class="admin-field">
+              <label for="hero-primary-label">Primary button label</label>
+              <input
+                id="hero-primary-label"
+                type="text"
+                value={home.hero.primaryCta.label}
+              />
+            </div>
+
+            <div class="admin-field">
+              <label for="hero-secondary-label">Secondary button label</label>
+              <input
+                id="hero-secondary-label"
+                type="text"
+                value={home.hero.secondaryCta.label}
+              />
+            </div>
+
+            <div class="admin-field">
+              <label for="hero-highlights">
+                Hero highlights (one per line)
+              </label>
+              <textarea
+                id="hero-highlights"
+                class="small"
+              >
+{home.hero.highlights.join("\n")}
+              </textarea>
+            </div>
+
+            <hr style="border-color: rgba(148,163,184,0.3); margin: 1.1rem 0;" />
+
+            <!-- Services -->
+            <h2>Services</h2>
+            {(home.services || []).map((service, index) => (
+              <div
+                class="admin-card"
+                style="background: #020617; margin-bottom: 0.75rem;"
+              >
+                <div class="admin-field">
+                  <label for={`service-title-${index}`}>
+                    Service {index + 1} title
+                  </label>
+                  <input
+                    id={`service-title-${index}`}
+                    type="text"
+                    value={service.title}
+                  />
+                </div>
+                <div class="admin-field">
+                  <label for={`service-body-${index}`}>
+                    Service {index + 1} description
+                  </label>
+                  <textarea
+                    id={`service-body-${index}`}
+                    class="small"
+                  >
+{service.body}
+                  </textarea>
+                </div>
+                <div class="admin-field">
+                  <label for={`service-bullets-${index}`}>
+                    Bullets (one per line)
+                  </label>
+                  <textarea
+                    id={`service-bullets-${index}`}
+                    class="small"
+                  >
+{service.bullets.join("\n")}
+                  </textarea>
+                </div>
+              </div>
+            ))}
+          </section>
+
+          <!-- RIGHT COLUMN: RAW JSON -->
+          <section class="admin-card">
+            <h2>Raw JSON</h2>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-top: 0;">
+              This is the JSON that powers the homepage. As you change fields on the left,
+              this JSON updates. Download it and replace
+              <code> src/content/home.json</code> in your project.
+            </p>
+
+            <div class="admin-field" style="margin-top: 0.75rem;">
+              <label for="jsonOutput">home.json</label>
+              <textarea id="jsonOutput">{initialJson}</textarea>
+            </div>
+
+            <div class="admin-actions">
+              <button id="downloadJson" type="button" class="btn btn-light">
+                Download home.json
+              </button>
+              <button id="prettyPrint" type="button" class="btn btn-outline-light">
+                Reformat JSON
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script type="module">
+      const jsonTextarea = document.getElementById("jsonOutput");
+      let state;
+
+      try {
+        state = JSON.parse(jsonTextarea.value);
+      } catch (e) {
+        console.error("Failed to parse initial JSON", e);
+        state = {};
+      }
+
+      function setAtPath(obj, path, value) {
+        let current = obj;
+        for (let i = 0; i < path.length - 1; i++) {
+          current = current[path[i]];
+        }
+        current[path[path.length - 1]] = value;
+      }
+
+      function updateJson() {
+        jsonTextarea.value = JSON.stringify(state, null, 2);
+      }
+
+      const bindings = [
+        { id: "hero-heading", path: ["hero", "heading"] },
+        { id: "hero-subheading", path: ["hero", "subheading"], isMultiline: true },
+        {
+          id: "hero-primary-label",
+          path: ["hero", "primaryCta", "label"],
+        },
+        {
+          id: "hero-secondary-label",
+          path: ["hero", "secondaryCta", "label"],
+        },
+        {
+          id: "hero-highlights",
+          path: ["hero", "highlights"],
+          isLinesArray: true,
+        },
+      ];
+
+      // Nav bindings
+      (state.nav || []).forEach((item, index) => {
+        bindings.push({
+          id: `nav-label-${index}`,
+          path: ["nav", index, "label"],
+        });
+        bindings.push({
+          id: `nav-href-${index}`,
+          path: ["nav", index, "href"],
+        });
+      });
+
+      // Service fields
+      (state.services || []).forEach((service, index) => {
+        bindings.push({
+          id: `service-title-${index}`,
+          path: ["services", index, "title"],
+        });
+        bindings.push({
+          id: `service-body-${index}`,
+          path: ["services", index, "body"],
+          isMultiline: true,
+        });
+        bindings.push({
+          id: `service-bullets-${index}`,
+          path: ["services", index, "bullets"],
+          isLinesArray: true,
+        });
+      });
+
+      bindings.forEach((binding) => {
+        const el = document.getElementById(binding.id);
+        if (!el) return;
+
+        el.addEventListener("input", () => {
+          let value = el.value;
+          if (binding.isLinesArray) {
+            value = value
+              .split("\\n")
+              .map((line) => line.trim())
+              .filter(Boolean);
+          } else if (binding.isMultiline) {
+            value = value.trim();
+          }
+          setAtPath(state, binding.path, value);
+          updateJson();
+        });
+      });
+
+      document
+        .getElementById("downloadJson")
+        .addEventListener("click", () => {
+          const blob = new Blob([jsonTextarea.value], {
+            type: "application/json",
+          });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "home.json";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        });
+
+      document.getElementById("prettyPrint").addEventListener("click", () => {
+        try {
+          const parsed = JSON.parse(jsonTextarea.value);
+          state = parsed;
+          jsonTextarea.value = JSON.stringify(parsed, null, 2);
+        } catch (e) {
+          alert("JSON is invalid – fix it before reformatting.");
+        }
+      });
+    </script>
+  </body>
+</html>

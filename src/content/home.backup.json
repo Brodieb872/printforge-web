@@ -1,0 +1,58 @@
+﻿---
+import Layout from "../layouts/Layout.astro";
+import home from "../content/home.json";
+---
+
+<Layout title={home.siteTitle}>
+
+  <!-- HERO SECTION -->
+  <section class="hero section">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+
+        <h1>{home.hero.heading}</h1>
+        <p>{home.hero.subheading}</p>
+
+        <div class="hero-actions">
+          <a class="btn" href={home.hero.primaryButton.href}>
+            {home.hero.primaryButton.label}
+          </a>
+
+          <a class="btn-secondary" href={home.hero.secondaryButton.href}>
+            {home.hero.secondaryButton.label}
+          </a>
+        </div>
+
+        <ul class="hero-highlights">
+          {home.hero.highlights.map(item => (
+            <li>{item}</li>
+          ))}
+        </ul>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION -->
+  <section class="section-alt">
+    <div class="container">
+      <h2>Services</h2>
+
+      <div class="cards-3">
+
+        {home.services.map(service => (
+          <div class="card">
+            <h3>{service.title}</h3>
+            <p>{service.description}</p>
+
+            <ul class="card-list">
+              {service.bullets.map(bullet => <li>{bullet}</li>)}
+            </ul>
+          </div>
+        ))}
+
+      </div>
+    </div>
+  </section>
+
+</Layout>
