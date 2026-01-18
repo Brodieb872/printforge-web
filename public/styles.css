@@ -425,3 +425,17 @@ body {
   display: block;
 }
 
+
+/* Hero background image */
+.hero {
+  background: url('/hero.jpg') center/cover no-repeat;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(5,7,11,0.75), rgba(5,7,11,0.9));
+  pointer-events: none;
+}
+
