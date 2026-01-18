@@ -439,3 +439,17 @@ body {
   pointer-events: none;
 }
 
+
+/* Hero parallax enhancement */
+.hero {
+  overflow: hidden;
+  background-attachment: fixed;
+}
+
+
+/* Hero parallax strengthen */
+.hero {
+  background-size: 110%;
+  transform: translateZ(0);
+}
+
