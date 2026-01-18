@@ -416,3 +416,12 @@ body {
     align-items: flex-start;
   }
 }
+
+/* Logo image sizing */
+.logo-img {
+  height: 40px;
+  width: auto;
+  max-width: 180px;
+  display: block;
+}
+
