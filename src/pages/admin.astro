@@ -1,4 +1,4 @@
-ï»¿---
+---
 import home from "../content/home.json";
 
 const initialJson = JSON.stringify(home, null, 2);
@@ -8,7 +8,7 @@ const initialJson = JSON.stringify(home, null, 2);
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>PrintForge admin â€“ home editor</title>
+    <title>PrintForge admin – home editor</title>
     <link rel="stylesheet" href="/styles.css" />
     <style>
       .admin-grid {
@@ -164,7 +164,7 @@ const initialJson = JSON.stringify(home, null, 2);
               <input
                 id="hero-primary-label"
                 type="text"
-                value={home.hero.primaryCta.label}
+                value={home.hero.primaryButton.label}
               />
             </div>
 
@@ -173,7 +173,7 @@ const initialJson = JSON.stringify(home, null, 2);
               <input
                 id="hero-secondary-label"
                 type="text"
-                value={home.hero.secondaryCta.label}
+                value={home.hero.secondaryButton.label}
               />
             </div>
 
@@ -216,7 +216,7 @@ const initialJson = JSON.stringify(home, null, 2);
                     id={`service-body-${index}`}
                     class="small"
                   >
-{service.body}
+{service.description}
                   </textarea>
                 </div>
                 <div class="admin-field">
@@ -289,11 +289,11 @@ const initialJson = JSON.stringify(home, null, 2);
         { id: "hero-subheading", path: ["hero", "subheading"], isMultiline: true },
         {
           id: "hero-primary-label",
-          path: ["hero", "primaryCta", "label"],
+          path: ["hero", "primaryButton", "label"],
         },
         {
           id: "hero-secondary-label",
-          path: ["hero", "secondaryCta", "label"],
+          path: ["hero", "secondaryButton", "label"],
         },
         {
           id: "hero-highlights",
@@ -322,7 +322,7 @@ const initialJson = JSON.stringify(home, null, 2);
         });
         bindings.push({
           id: `service-body-${index}`,
-          path: ["services", index, "body"],
+          path: ["services", index, "description"],
           isMultiline: true,
         });
         bindings.push({
@@ -373,9 +373,10 @@ const initialJson = JSON.stringify(home, null, 2);
           state = parsed;
           jsonTextarea.value = JSON.stringify(parsed, null, 2);
         } catch (e) {
-          alert("JSON is invalid â€“ fix it before reformatting.");
+          alert("JSON is invalid – fix it before reformatting.");
         }
       });
     </script>
   </body>
 </html>
+
