@@ -1,16 +1,17 @@
 ﻿:root {
-  --bg: #070b10;
-  --bg-alt: #0f1722;
+  --bg: #101827;          /* slightly lighter base */
+  --bg-alt: #141c2b;      /* section alt background */
   --accent: #ff6b1a;
-  --accent-soft: #ff8a3a20;
-  --text: #f5f7fa;
-  --muted: #97a0b5;
-  --border: #1f2935;
-  --card-bg: #101827;
+  --accent-soft: #ff8a3a1f;
+  --text: #f9fafb;        /* brighter text */
+  --muted: #cbd3e2;       /* lighter muted text */
+  --border: #2a3648;      /* softer border */
+  --card-bg: #182234;     /* lighter cards */
   --radius-lg: 16px;
   --radius-md: 12px;
-  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.4);
 }
+
 
 *,
 *::before,
@@ -22,10 +23,11 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top, #182235 0, #05070a 55%);
+  background: radial-gradient(circle at top, #141c2b 0, #020617 60%);
   color: var(--text);
   line-height: 1.5;
 }
+
 
 /* Layout */
 
@@ -459,3 +461,88 @@ body {
   background: linear-gradient(rgba(5,7,11,0.82), rgba(5,7,11,0.6) 35%, rgba(5,7,11,0.2));
 }
 
+
+ /* === Brightening overrides 2026-01-19 === */
+
+:root {
+  --bg: #101827;
+  --bg-alt: #141c2b;
+  --text: #f9fafb;
+  --muted: #cbd3e2;
+  --border: #2a3648;
+  --card-bg: #182234;
+}
+
+body {
+  background: radial-gradient(circle at top, #141c2b 0, #020617 60%);
+  color: var(--text);
+}
+
+/* Hero layout & overlay tweaks */
+.hero {
+  position: relative;
+  padding: 4.5rem 0 3rem;
+  background: url('/hero.jpg') center/cover no-repeat;
+  background-size: 105%;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      rgba(3, 7, 18, 0.80) 0%,
+      rgba(3, 7, 18, 0.55) 35%,
+      rgba(3, 7, 18, 0.25) 70%,
+      rgba(3, 7, 18, 0.10) 100%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Cards & sections */
+.card {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(203, 213, 225, 0.30);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.section-alt {
+  background: linear-gradient(180deg, #141c2b 0%, #101827 100%);
+}
+
+/* Footer */
+.site-footer {
+  background: #050812;
+  border-top: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+/* Buttons */
+.btn-secondary {
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--text);
+  border: 1px solid rgba(249, 250, 251, 0.4);
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(249, 250, 251, 0.08);
+}
+
+.btn-outline-light {
+  background: transparent;
+  color: #f9fafb;
+  border: 1px solid rgba(249, 250, 251, 0.7);
+}
+
+.btn-outline-light:hover {
+  background: rgba(249, 250, 251, 0.12);
+}
