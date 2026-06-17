@@ -1,142 +1,920 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import home from "../content/home.json";
-
-const { brand, nav, hero, services } = home;
 ---
 
-<Layout title={home.siteTitle}>
-  {/* HEADER / NAV */}
-  <header class="site-header">
-    <div class="container">
-      <div class="header-inner">
-        <a href="#" class="logo">
-          <img src="/printforge-logo.png" alt="PrintForge logo" class="logo-img" /><span class="logo-wordmark">PrintForge</span>
-        </a>
+<Layout title="Print Forge — Commercial 3D Printing &amp; Fabrication | New Zealand">
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #060610;
+    color: #e2e8f0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  :root {
+    --blue:    #2563eb;
+    --purple:  #7c3aed;
+    --pink:    #db2777;
+    --dark:    #060610;
+    --dark2:   #0b0b1c;
+    --dark3:   #0f0f24;
+    --dark4:   #13132e;
+    --border:  rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.05);
+    --text:    #e2e8f0;
+    --muted:   rgba(255,255,255,0.45);
+    --muted2:  rgba(255,255,255,0.65);
+    --grad:    linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #db2777 100%);
+    --grad-h:  linear-gradient(135deg, #1d4ed8 0%, #6d28d9 50%, #be185d 100%);
+    --grad-90: linear-gradient(90deg, #2563eb 0%, #7c3aed 50%, #db2777 100%);
+  }
+  .container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 96px 0; }
+  h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; line-height: 1.12; color: #fff; }
+  h2 { font-size: clamp(1.9rem, 3.2vw, 2.6rem); }
+  h3 { font-size: 1.1rem; font-weight: 600; }
+  p  { color: var(--muted2); }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    background: var(--grad);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: inline-block; width: 20px; height: 2px;
+    background: var(--grad); border-radius: 2px;
+    -webkit-text-fill-color: initial;
+    flex-shrink: 0;
+  }
+  .grad-text {
+    background: var(--grad);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.875rem; font-weight: 700;
+    padding: 13px 26px; border-radius: 8px;
+    transition: all 0.18s ease; cursor: pointer; border: none;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--grad); color: #fff; }
+  .btn-primary:hover { background: var(--grad-h); transform: translateY(-1px); box-shadow: 0 8px 30px rgba(124,58,237,0.35); }
+  .btn-outline { background: transparent; color: rgba(255,255,255,0.85); border: 1.5px solid var(--border); }
+  .btn-outline:hover { border-color: rgba(124,58,237,0.6); color: #fff; }
+  .btn-lg { padding: 16px 32px; font-size: 0.95rem; }
+  .section-header { margin-bottom: 56px; }
+  .section-header.center { text-align: center; }
+  .section-header p { margin-top: 12px; max-width: 540px; }
+  .section-header.center p { margin: 12px auto 0; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(6,6,16,0.85);
+    backdrop-filter: blur(20px) saturate(1.3);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.2s;
+  }
+  .nav-top-line { height: 3px; background: var(--grad); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-wordmark { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; color: var(--muted); transition: color 0.15s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta { display: flex; align-items: center; gap: 10px; }
+  .nav-portal { font-size: 0.8rem; font-weight: 600; color: var(--muted); border: 1.5px solid var(--border); padding: 8px 15px; border-radius: 7px; transition: all 0.15s; }
+  .nav-portal:hover { color: #fff; border-color: rgba(124,58,237,0.5); }
+  .nav-hamburger { display: none; background: none; border: none; cursor: pointer; color: #fff; padding: 4px; }
+  .mobile-menu { display: none; flex-direction: column; background: var(--dark2); border-top: 1px solid var(--border); padding: 16px 24px 24px; gap: 4px; }
+  .mobile-menu a { font-size: 0.92rem; font-weight: 500; color: var(--muted2); padding: 10px 0; border-bottom: 1px solid var(--border2); }
+  .mobile-menu.open { display: flex; }
+  .hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; background: var(--dark); padding-top: 64px; }
+  .hero-orbs { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.18; }
+  .orb-1 { width: 600px; height: 600px; background: #2563eb; top: -15%; right: -10%; }
+  .orb-2 { width: 400px; height: 400px; background: #7c3aed; bottom: 5%; left: 15%; }
+  .orb-3 { width: 300px; height: 300px; background: #db2777; top: 30%; right: 25%; }
+  .hero-grid-bg { position: absolute; inset: 0; z-index: 0; opacity: 0.03; background-image: linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px); background-size: 56px 56px; }
+  .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; padding: 80px 0 60px; }
+  .hero-pill { display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(124,58,237,0.35); background: rgba(124,58,237,0.1); border-radius: 100px; padding: 7px 16px 7px 8px; margin-bottom: 24px; }
+  .hero-pill-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--grad); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .hero-pill-dot svg { width: 13px; height: 13px; }
+  .hero-pill-text { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.75); }
+  .hero h1 { font-size: clamp(2.6rem, 4.8vw, 4rem); margin-bottom: 20px; letter-spacing: -0.02em; }
+  .hero-sub { font-size: 1.1rem; color: var(--muted2); margin-bottom: 36px; max-width: 480px; line-height: 1.7; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-stats { display: flex; gap: 28px; margin-top: 44px; padding-top: 32px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+  .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+  .hero-visual { position: relative; }
+  .hero-main-card { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); }
+  .hero-main-card-top { padding: 0; background: linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(124,58,237,0.12) 50%, rgba(219,39,119,0.08) 100%); display: flex; align-items: center; justify-content: center; min-height: 280px; position: relative; overflow: hidden; }
+  .hero-main-card-body { padding: 20px 24px; border-top: 1px solid var(--border); }
+  .hero-card-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .hero-card-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #fff; font-size: 0.95rem; margin-top: 3px; }
+  .hero-card-meta { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+  .hero-sub-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .hero-sub-card { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 16px; position: relative; overflow: hidden; }
+  .hero-sub-card-bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .hero-sub-card .hero-card-label { margin-top: 8px; }
+  .hero-float-badge { position: absolute; top: 16px; right: 16px; background: rgba(6,6,16,0.8); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; backdrop-filter: blur(12px); display: flex; align-items: center; gap: 8px; }
+  .hero-float-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero-float-badge-text { font-size: 0.72rem; font-weight: 600; color: #fff; }
+  .trust-strip { background: var(--dark2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 0; }
+  .trust-inner { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 28px; }
+  .trust-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .trust-item { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: var(--muted2); }
+  .trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
+  .services-section { background: var(--dark); }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .svc-card { background: var(--dark2); padding: 32px 28px; transition: background 0.2s; position: relative; }
+  .svc-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--grad); opacity: 0; transition: opacity 0.2s; }
+  .svc-card:hover { background: var(--dark3); }
+  .svc-card:hover::before { opacity: 1; }
+  .svc-icon { width: 52px; height: 52px; border-radius: 12px; background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .svc-icon svg { width: 26px; height: 26px; }
+  .svc-card h3 { color: #fff; margin-bottom: 10px; }
+  .svc-card p { font-size: 0.875rem; line-height: 1.7; }
+  .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .tag { display: inline-block; font-size: 0.7rem; font-weight: 600; background: rgba(124,58,237,0.12); color: rgba(167,139,250,0.9); border: 1px solid rgba(124,58,237,0.2); border-radius: 4px; padding: 3px 9px; letter-spacing: 0.04em; }
+  .apps-section { background: var(--dark3); }
+  .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .app-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 22px 18px; transition: border-color 0.2s, background 0.2s; position: relative; overflow: hidden; }
+  .app-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: var(--grad); opacity: 0; transition: opacity 0.2s; }
+  .app-card:hover { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.06); }
+  .app-card:hover::after { opacity: 1; }
+  .app-icon-wrap { width: 44px; height: 44px; border-radius: 10px; background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 12px; }
+  .app-card h4 { font-size: 0.9rem; color: #fff; margin-bottom: 5px; }
+  .app-card p { font-size: 0.79rem; line-height: 1.6; }
+  .why-section { background: var(--dark); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .why-list { display: flex; flex-direction: column; gap: 18px; margin-top: 28px; }
+  .why-item { display: flex; gap: 14px; align-items: flex-start; }
+  .why-num { width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; background: var(--grad); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 800; color: #fff; }
+  .why-item h4 { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 3px; }
+  .why-item p { font-size: 0.83rem; margin: 0; }
+  .cap-panel { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .cap-panel-header { padding: 20px 24px; border-bottom: 1px solid var(--border); background: rgba(124,58,237,0.08); font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(167,139,250,0.9); }
+  .cap-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 24px; border-bottom: 1px solid var(--border2); font-size: 0.84rem; }
+  .cap-row:last-child { border-bottom: none; }
+  .cap-label { color: var(--muted); }
+  .cap-val { color: #fff; font-weight: 500; text-align: right; max-width: 58%; font-size: 0.82rem; }
+  .cta-mini { margin: 16px; padding: 18px; background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); border-radius: 10px; }
+  .cta-mini p { font-size: 0.84rem; line-height: 1.65; margin-bottom: 14px; }
+  .cta-mini strong { color: rgba(167,139,250,0.95); }
+  .visual-section { background: var(--dark3); overflow: hidden; }
+  .visual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+  .visual-img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .vis-card { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: rgba(255,255,255,0.03); position: relative; }
+  .vis-card:first-child { grid-column: span 2; }
+  .vis-card-inner { display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .vis-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(to top, rgba(6,6,16,0.95) 0%, transparent 100%); }
+  .vis-label-text { font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem; font-weight: 700; color: rgba(255,255,255,0.9); }
+  .vis-label-sub { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+  .process-section { background: var(--dark); }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+  .process-steps::before { content: ''; position: absolute; top: 27px; left: 12%; right: 12%; height: 1px; background: var(--border); }
+  .process-step { text-align: center; padding: 0 12px; }
+  .step-circle { width: 54px; height: 54px; border-radius: 50%; background: var(--dark2); border: 1px solid var(--border); margin: 0 auto 22px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+  .step-circle-inner { width: 36px; height: 36px; border-radius: 50%; background: var(--grad); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 800; color: #fff; }
+  .process-step h3 { font-size: 0.95rem; margin-bottom: 8px; }
+  .process-step p { font-size: 0.82rem; line-height: 1.65; }
+  .jobs-section { background: var(--dark3); }
+  .jobs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .job-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-left: 3px solid transparent; border-image: var(--grad) 1; border-radius: 0 10px 10px 0; padding: 18px 20px; }
+  .job-card h4 { font-size: 0.88rem; color: #fff; margin-bottom: 5px; }
+  .job-card p { font-size: 0.8rem; }
+  .cta-band { position: relative; overflow: hidden; padding: 88px 0; background: var(--dark2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+  .cta-band-orb-1 { position: absolute; width: 500px; height: 500px; border-radius: 50%; background: rgba(37,99,235,0.12); filter: blur(60px); top: -200px; left: -100px; pointer-events: none; }
+  .cta-band-orb-2 { position: absolute; width: 400px; height: 400px; border-radius: 50%; background: rgba(219,39,119,0.1); filter: blur(60px); bottom: -150px; right: -80px; pointer-events: none; }
+  .cta-band h2 { position: relative; z-index: 1; margin-bottom: 14px; }
+  .cta-band p { position: relative; z-index: 1; max-width: 500px; margin: 0 auto 32px; }
+  .cta-actions { position: relative; z-index: 1; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .contact-section { background: var(--dark); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 52px; align-items: start; }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; }
+  .contact-item { display: flex; gap: 14px; }
+  .contact-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 9px; background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2); display: flex; align-items: center; justify-content: center; }
+  .contact-icon svg { width: 17px; height: 17px; stroke: rgba(167,139,250,0.9); fill: none; }
+  .contact-lbl { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .contact-val { font-size: 0.9rem; color: #fff; font-weight: 500; margin-top: 3px; }
+  .contact-val a { color: rgba(167,139,250,0.9); }
+  .accepts-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-top: 8px; }
+  .accepts-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 12px; }
+  .accepts-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted2); padding: 4px 0; }
+  .contact-form { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+  .form-row { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.5); margin-bottom: 7px; letter-spacing: 0.02em; }
+  .form-input, .form-select, .form-textarea { width: 100%; background: rgba(255,255,255,0.04); border: 1.5px solid var(--border); border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; font-size: 0.875rem; padding: 11px 14px; transition: border-color 0.15s; outline: none; }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,0.2); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--purple); background: rgba(124,58,237,0.06); }
+  .form-select { appearance: none; cursor: pointer; }
+  .form-select option { background: #1a1a3e; color: #fff; }
+  .form-textarea { min-height: 110px; resize: vertical; }
+  .form-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-submit { width: 100%; justify-content: center; margin-top: 6px; font-size: 0.9rem; }
+  footer { background: var(--dark2); border-top: 1px solid var(--border); padding: 52px 0 28px; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 44px; padding-bottom: 40px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .footer-brand p { font-size: 0.83rem; margin-top: 14px; max-width: 240px; color: var(--muted); }
+  .footer-col-title { font-family: 'Space Grotesk', sans-serif; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 16px; }
+  .footer-col ul { display: flex; flex-direction: column; gap: 9px; }
+  .footer-col ul a { font-size: 0.83rem; color: var(--muted); transition: color 0.15s; }
+  .footer-col ul a:hover { color: rgba(167,139,250,0.9); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer-bottom p { font-size: 0.77rem; color: rgba(255,255,255,0.2); }
+  @media (max-width: 960px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { display: none; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .why-grid { grid-template-columns: 1fr; gap: 36px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 36px; }
+    .process-steps::before { display: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .visual-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .section { padding: 64px 0; }
+    .nav-links, .nav-cta .btn { display: none; }
+    .nav-hamburger { display: block; }
+    .services-grid { grid-template-columns: 1fr; }
+    .form-cols { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr; }
+  }
+</style>
 
-        <nav class="main-nav">
-          {nav.map((item) => (
-            <a href={item.href}>{item.label}</a>
-          ))}
-        </nav>
-
-        <a class="btn btn-small btn-outline-light" href="#quote">
-          Get a quote
-        </a>
-      </div>
+<!-- Nav -->
+<nav id="mainNav">
+  <div class="nav-top-line"></div>
+  <div class="container nav-inner">
+    <a href="/" class="logo">
+      <svg width="38" height="32" viewBox="0 0 38 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="38" y2="32" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#2563eb"/><stop offset="50%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#db2777"/>
+          </linearGradient>
+          <linearGradient id="lg2" x1="0" y1="32" x2="38" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#db2777" stop-opacity="0.7"/><stop offset="50%" stop-color="#7c3aed" stop-opacity="0.5"/><stop offset="100%" stop-color="#2563eb" stop-opacity="0.3"/>
+          </linearGradient>
+        </defs>
+        <path d="M6 28 L22 16 L6 4" stroke="url(#lg2)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16 28 L32 16 L16 4" stroke="url(#lg1)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-wordmark">Print Forge</span>
+    </a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#applications">Applications</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
     </div>
-  </header>
+    <div class="nav-cta">
+      <a href="https://portal.printforge.co.nz/" class="nav-portal">Client Portal</a>
+      <a href="#contact" class="btn btn-primary">Get a Quote</a>
+    </div>
+    <button class="nav-hamburger" id="menuBtn" aria-label="Open menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services">Services</a>
+    <a href="#applications">Applications</a>
+    <a href="#process">How It Works</a>
+    <a href="#contact">Contact &amp; Quote</a>
+    <a href="https://portal.printforge.co.nz/">Client Portal</a>
+  </div>
+</nav>
 
-  <main>
-    {/* HERO */}
-    <section class="section hero" id="top">
-      <div class="container">
-        <div class="hero-inner">
-          <div class="hero-copy">
-            <p class="hero-tag">
-              <span>Staging preview</span>
-            </p>
-
-            <h1>{hero.heading}</h1>
-            <p>{hero.subheading}</p>
-
-            <div class="hero-actions">
-              <a class="btn" href={hero.primaryButton.href}>
-                {hero.primaryButton.label}
-              </a>
-              <a class="btn btn-secondary" href={hero.secondaryButton.href}>
-                {hero.secondaryButton.label}
-              </a>
-            </div>
-
-            <ul class="hero-highlights">
-              {hero.highlights.map((line) => (
-                <li>{line}</li>
-              ))}
-            </ul>
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="hero-grid-bg"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-pill">
+          <div class="hero-pill-dot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/></svg>
           </div>
-
-          <aside class="hero-panel">
-            <div class="hero-card">
-              <span class="hero-tag">Typical jobs we run</span>
-              <h2>Examples</h2>
-              <ul>
-                <li>Custom HVAC and marine components</li>
-                <li>One-off replacement parts &amp; adapters</li>
-                <li>Small run product batches &amp; jigs</li>
-                <li>Concept models for buildings &amp; structures</li>
-              </ul>
-            </div>
-          </aside>
+          <span class="hero-pill-text">New Zealand Commercial Fabrication</span>
         </div>
-      </div>
-    </section>
-
-    {/* SERVICES */}
-    <section class="section section-alt" id="services">
-      <div class="container">
-        <h2>Services</h2>
-        <div class="cards-3">
-          {services.map((svc) => (
-            <article class="card">
-              <h3>{svc.title}</h3>
-              <p>{svc.description}</p>
-              <ul class="card-list">
-                {svc.bullets.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </article>
-          ))}
+        <h1>Parts Built for<br><span class="grad-text">Real Work.</span></h1>
+        <p class="hero-sub">Commercial 3D printing, laser cutting, and custom fabrication for New Zealand businesses that need functional components — delivered fast.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary btn-lg">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Get a Quote
+          </a>
+          <a href="#services" class="btn btn-outline btn-lg">See Services</a>
         </div>
-      </div>
-    </section>
-
-    {/* CTA */}
-    <section class="section section-accent" id="quote">
-      <div class="container">
-        <div class="cta">
+        <div class="hero-stats">
           <div>
-            <h2>Ready to talk about a job?</h2>
-            <p>
-              Send through some details about your project and we�ll come back
-              with options.
-            </p>
+            <div class="stat-num">FFF &amp; SLA</div>
+            <div class="stat-label">Print technologies</div>
           </div>
-          <div class="cta-actions">
-            <a class="btn btn-light" href="mailto:info@printforge.co.nz">
-              Email your job details
-            </a>
-            <a class="btn btn-outline-light" href="#contact">
-              Chat about a concept
-            </a>
+          <div>
+            <div class="stat-num">NZ Made</div>
+            <div class="stat-label">Local fabrication</div>
+          </div>
+          <div>
+            <div class="stat-num">3–5 days</div>
+            <div class="stat-label">Standard turnaround</div>
           </div>
         </div>
       </div>
-    </section>
-  </main>
-
-  {/* FOOTER */}
-  <footer class="site-footer" id="contact">
-    <div class="container">
-      <div class="footer-inner">
-        <div>
-          <div class="logo">
-            <img src="/printforge-logo.png" alt="PrintForge logo" class="logo-img" /><span class="logo-wordmark">PrintForge</span>
+      <div class="hero-visual">
+        <div class="hero-main-card">
+          <div class="hero-main-card-top">
+            <svg width="320" height="260" viewBox="0 0 320 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="hg1" x1="0" y1="0" x2="320" y2="260" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#2563eb" stop-opacity="0.8"/><stop offset="50%" stop-color="#7c3aed" stop-opacity="0.7"/><stop offset="100%" stop-color="#db2777" stop-opacity="0.6"/>
+                </linearGradient>
+                <linearGradient id="hg2" x1="160" y1="0" x2="160" y2="260" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.5"/><stop offset="100%" stop-color="#2563eb" stop-opacity="0.2"/>
+                </linearGradient>
+                <linearGradient id="hg3" x1="0" y1="0" x2="320" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#2563eb" stop-opacity="0.4"/><stop offset="100%" stop-color="#db2777" stop-opacity="0.4"/>
+                </linearGradient>
+                <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <!-- Grid floor -->
+              <line x1="0" y1="200" x2="60" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="0" y1="200" x2="-60" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="40" y1="200" x2="100" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="40" y1="200" x2="-20" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="80" y1="200" x2="140" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="80" y1="200" x2="20" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="120" y1="200" x2="180" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="120" y1="200" x2="60" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="160" y1="200" x2="220" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="160" y1="200" x2="100" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="200" y1="200" x2="260" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="200" y1="200" x2="140" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="240" y1="200" x2="300" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="240" y1="200" x2="180" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="280" y1="200" x2="340" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="280" y1="200" x2="220" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="320" y1="200" x2="380" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <line x1="320" y1="200" x2="260" y2="260" stroke="url(#hg3)" stroke-width="0.6" opacity="0.4"/>
+              <!-- Isometric box -->
+              <polygon points="160,40 260,95 260,185 160,240 60,185 60,95" fill="url(#hg2)" stroke="url(#hg1)" stroke-width="1.5" opacity="0.85"/>
+              <polygon points="160,40 260,95 160,150 60,95" fill="rgba(124,58,237,0.25)" stroke="url(#hg1)" stroke-width="1.5"/>
+              <polygon points="60,95 160,150 160,240 60,185" fill="rgba(37,99,235,0.15)" stroke="url(#hg1)" stroke-width="1"/>
+              <polygon points="260,95 160,150 160,240 260,185" fill="rgba(219,39,119,0.1)" stroke="url(#hg1)" stroke-width="1"/>
+              <line x1="160" y1="40" x2="160" y2="240" stroke="url(#hg1)" stroke-width="1" opacity="0.5" stroke-dasharray="4,4"/>
+              <!-- Layer lines -->
+              <ellipse cx="160" cy="120" rx="12" ry="4.2" fill="none" stroke="url(#hg1)" stroke-width="0.8" opacity="0.16"/>
+              <ellipse cx="160" cy="145" rx="24" ry="8.4" fill="none" stroke="url(#hg1)" stroke-width="0.8" opacity="0.20"/>
+              <ellipse cx="160" cy="170" rx="36" ry="12.6" fill="none" stroke="url(#hg1)" stroke-width="0.8" opacity="0.24"/>
+              <ellipse cx="160" cy="195" rx="48" ry="16.8" fill="none" stroke="url(#hg1)" stroke-width="0.8" opacity="0.28"/>
+              <ellipse cx="160" cy="220" rx="60" ry="21" fill="none" stroke="url(#hg1)" stroke-width="0.8" opacity="0.32"/>
+              <ellipse cx="160" cy="245" rx="72" ry="25.2" fill="none" stroke="url(#hg1)" stroke-width="0.8" opacity="0.36"/>
+              <ellipse cx="160" cy="270" rx="84" ry="29.4" fill="none" stroke="url(#hg1)" stroke-width="0.8" opacity="0.40"/>
+              <ellipse cx="160" cy="295" rx="96" ry="33.6" fill="none" stroke="url(#hg1)" stroke-width="0.8" opacity="0.44"/>
+              <!-- Print head -->
+              <g filter="url(#glow)">
+                <rect x="145" y="28" width="30" height="12" rx="3" fill="rgba(124,58,237,0.6)" stroke="rgba(167,139,250,0.8)" stroke-width="1.5"/>
+                <rect x="155" y="20" width="10" height="10" rx="2" fill="rgba(37,99,235,0.8)" stroke="rgba(167,139,250,0.9)" stroke-width="1"/>
+                <circle cx="160" cy="40" r="3" fill="#db2777" opacity="0.9"/>
+              </g>
+              <circle cx="160" cy="40" r="4" fill="url(#hg1)" opacity="0.9" filter="url(#glow)"/>
+              <circle cx="260" cy="95" r="3" fill="rgba(219,39,119,0.8)" filter="url(#glow)"/>
+              <circle cx="60" cy="95" r="3" fill="rgba(37,99,235,0.8)" filter="url(#glow)"/>
+              <line x1="20" y1="95" x2="20" y2="185" stroke="rgba(124,58,237,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="15" y1="95" x2="25" y2="95" stroke="rgba(124,58,237,0.6)" stroke-width="1"/>
+              <line x1="15" y1="185" x2="25" y2="185" stroke="rgba(124,58,237,0.6)" stroke-width="1"/>
+              <text x="8" y="143" fill="rgba(124,58,237,0.7)" font-family="monospace" font-size="8" transform="rotate(-90,8,143)">H</text>
+              <text x="100" y="258" fill="rgba(124,58,237,0.6)" font-family="monospace" font-size="8">layer 148 / 200</text>
+              <text x="210" y="258" fill="rgba(37,99,235,0.6)" font-family="monospace" font-size="8">74%</text>
+            </svg>
+            <div class="hero-float-badge">
+              <div class="hero-float-badge-dot"></div>
+              <span class="hero-float-badge-text">Printing now</span>
+            </div>
           </div>
-          <p class="footer-note">
-            Staging site for PrintForge � content managed via home.json.
-          </p>
+          <div class="hero-main-card-body">
+            <div class="hero-card-label">Active Job</div>
+            <div class="hero-card-title">Industrial bracket — PETG-CF / M5 brass inserts</div>
+            <div class="hero-card-meta">Est. completion: 3h 22m &nbsp;·&nbsp; Layer 148/200</div>
+          </div>
         </div>
-
-        <div class="footer-links">
-          <a href="mailto:info@printforge.co.nz">info@printforge.co.nz</a>
-          <span>�</span>
-          <span>Tauranga, New Zealand</span>
+        <div class="hero-sub-cards">
+          <div class="hero-sub-card">
+            <div class="hero-sub-card-bar" style="background: linear-gradient(90deg,#2563eb,#7c3aed);"></div>
+            <svg width="100%" height="80" viewBox="0 0 180 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="160" height="60" rx="4" fill="none" stroke="rgba(37,99,235,0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+              <rect x="20" y="20" width="60" height="40" rx="2" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.6)" stroke-width="1.5"/>
+              <rect x="100" y="20" width="60" height="18" rx="2" fill="rgba(124,58,237,0.08)" stroke="rgba(124,58,237,0.5)" stroke-width="1"/>
+              <rect x="100" y="44" width="28" height="16" rx="2" fill="rgba(219,39,119,0.08)" stroke="rgba(219,39,119,0.4)" stroke-width="1"/>
+              <circle cx="139" cy="52" r="7" fill="rgba(124,58,237,0.08)" stroke="rgba(124,58,237,0.5)" stroke-width="1"/>
+              <line x1="165" y1="10" x2="20" y2="20" stroke="rgba(219,39,119,0.7)" stroke-width="1" stroke-dasharray="2,2"/>
+              <circle cx="165" cy="10" r="3" fill="#db2777" opacity="0.8"/>
+            </svg>
+            <div class="hero-card-label" style="margin-top:6px;">Laser Cutting</div>
+            <div class="hero-card-title" style="font-size:0.82rem;">Acrylic panel nest</div>
+          </div>
+          <div class="hero-sub-card">
+            <div class="hero-sub-card-bar" style="background: linear-gradient(90deg,#7c3aed,#db2777);"></div>
+            <svg width="100%" height="80" viewBox="0 0 180 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="30" y="40" width="40" height="30" fill="rgba(37,99,235,0.15)" stroke="rgba(37,99,235,0.5)" stroke-width="1"/>
+              <polygon points="30,40 50,20 70,40" fill="rgba(124,58,237,0.2)" stroke="rgba(124,58,237,0.5)" stroke-width="1"/>
+              <rect x="80" y="30" width="30" height="40" fill="rgba(124,58,237,0.12)" stroke="rgba(124,58,237,0.4)" stroke-width="1"/>
+              <polygon points="80,30 95,15 110,30" fill="rgba(219,39,119,0.15)" stroke="rgba(219,39,119,0.4)" stroke-width="1"/>
+              <rect x="120" y="50" width="20" height="20" fill="rgba(219,39,119,0.1)" stroke="rgba(219,39,119,0.35)" stroke-width="1"/>
+              <line x1="10" y1="70" x2="170" y2="70" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            </svg>
+            <div class="hero-card-label" style="margin-top:6px;">Arch. Model</div>
+            <div class="hero-card-title" style="font-size:0.82rem;">1:200 site model</div>
+          </div>
         </div>
       </div>
     </div>
-  </footer>
+  </div>
+</section>
+
+<!-- Trust Strip -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <span class="trust-label">Trusted for</span>
+    <div class="trust-item"><div class="trust-dot"></div>Functional prototypes</div>
+    <div class="trust-item"><div class="trust-dot"></div>Short-run production</div>
+    <div class="trust-item"><div class="trust-dot"></div>HVAC &amp; refrigeration parts</div>
+    <div class="trust-item"><div class="trust-dot"></div>Architectural models</div>
+    <div class="trust-item"><div class="trust-dot"></div>Custom enclosures</div>
+    <div class="trust-item"><div class="trust-dot"></div>Trade components</div>
+  </div>
+</div>
+
+<!-- Services -->
+<section class="section services-section" id="services">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">What We Do</span>
+      <h2>Commercial Fabrication Services</h2>
+      <p>From single prototypes to short production runs — we produce functional parts that hold up in real-world use.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="sg" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#2563eb"/><stop offset=".5" stop-color="#7c3aed"/><stop offset="1" stop-color="#db2777"/></linearGradient></defs>
+            <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="url(#sg)"/>
+          </svg>
+        </div>
+        <h3>3D Printing — FFF / FDM</h3>
+        <p>Industrial-grade fused filament fabrication in engineering materials. PETG, ASA, ABS, Nylon, carbon-fibre filled, TPU, and more.</p>
+        <div class="svc-tags"><span class="tag">Structural parts</span><span class="tag">Brackets</span><span class="tag">Enclosures</span><span class="tag">Jigs</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,0.9)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Resin / SLA Printing</h3>
+        <p>High-detail resin prints for precision components, display models, and engineering applications requiring fine surface finish.</p>
+        <div class="svc-tags"><span class="tag">High detail</span><span class="tag">Smooth finish</span><span class="tag">Engineering grade</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(244,114,182,0.9)" stroke-width="1.8"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <h3>Laser Cutting &amp; Engraving</h3>
+        <p>Precise cutting of acrylic, ply, MDF, and aluminium sheet. Engraving of panels, signs, templates, and identification plates.</p>
+        <div class="svc-tags"><span class="tag">Signage</span><span class="tag">Panels</span><span class="tag">Acrylic</span><span class="tag">Ply</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(167,139,250,0.9)" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M7 17v2a2 2 0 002 2h2"/></svg></div>
+        <h3>Custom Brackets &amp; Adapters</h3>
+        <p>When off-the-shelf doesn't fit. We design and print custom mounting brackets, adapters, spacers, and mechanical components.</p>
+        <div class="svc-tags"><span class="tag">HVAC</span><span class="tag">Refrigeration</span><span class="tag">Trades</span><span class="tag">Custom fit</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,0.9)" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <h3>Architectural Models</h3>
+        <p>Scale models and building components for architects, developers, and designers. Structural elements, site models, presentation pieces.</p>
+        <div class="svc-tags"><span class="tag">Scale models</span><span class="tag">Site plans</span><span class="tag">Presentation</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(244,114,182,0.9)" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div>
+        <h3>Short-Run Production</h3>
+        <p>Need 10–500 identical parts? We handle short-run manufacturing where traditional tooling isn't cost-effective.</p>
+        <div class="svc-tags"><span class="tag">10–500 units</span><span class="tag">Consistent quality</span><span class="tag">No tooling cost</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Applications -->
+<section class="section apps-section" id="applications">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Who We Work With</span>
+      <h2>Typical Jobs We Run</h2>
+      <p>We work across a wide range of industries. Here are some of the jobs we handle regularly.</p>
+    </div>
+    <div class="apps-grid">
+      <div class="app-card"><div class="app-icon-wrap">🔧</div><h4>HVAC &amp; Refrigeration</h4><p>Custom brackets, pipe supports, duct adapters, controller mounts</p></div>
+      <div class="app-card"><div class="app-icon-wrap">🏗️</div><h4>Builders &amp; Trades</h4><p>Site fixtures, form templates, jigs, non-standard fittings</p></div>
+      <div class="app-card"><div class="app-icon-wrap">⚙️</div><h4>Product Prototyping</h4><p>Functional first articles, design iteration, pre-tooling samples</p></div>
+      <div class="app-card"><div class="app-icon-wrap">🏛️</div><h4>Architects &amp; Designers</h4><p>Scale building models, presentation pieces, site components</p></div>
+      <div class="app-card"><div class="app-icon-wrap">🔩</div><h4>Engineering</h4><p>Replacement parts, jigs, fixtures, tooling aids</p></div>
+      <div class="app-card"><div class="app-icon-wrap">🚗</div><h4>Automotive &amp; Transport</h4><p>Panel clips, mounting adapters, bracket replacements</p></div>
+      <div class="app-card"><div class="app-icon-wrap">💡</div><h4>Product Designers</h4><p>Concept models, user testing units, packaging inserts</p></div>
+      <div class="app-card"><div class="app-icon-wrap">🏢</div><h4>Commercial Signage</h4><p>Acrylic signs, engraved plates, dimensional lettering, panels</p></div>
+      <div class="app-card"><div class="app-icon-wrap">🔬</div><h4>Research &amp; Education</h4><p>Lab equipment parts, instrument housings, specimen holders</p></div>
+      <div class="app-card"><div class="app-icon-wrap">📦</div><h4>Enclosures &amp; Cases</h4><p>Electronics housings, junction boxes, control panel enclosures</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Visual / Work Section -->
+<section class="section visual-section" id="gallery">
+  <div class="container">
+    <div class="visual-grid">
+      <div>
+        <span class="eyebrow">Our Work</span>
+        <h2>Precision Parts,<br><span class="grad-text">Every Time.</span></h2>
+        <p style="margin-top:14px;max-width:420px;">From complex functional assemblies to fine architectural detail — every job is produced with engineering rigour and quality checks at every stage.</p>
+        <div style="margin-top:28px;display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.84rem;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><span style="color:#fff;font-weight:600;">Layer resolution</span><span style="color:var(--muted);"> — Down to 0.05 mm (SLA) · 0.1 mm (FFF)</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.84rem;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><span style="color:#fff;font-weight:600;">Materials stocked</span><span style="color:var(--muted);"> — 20+ engineering-grade filaments</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.84rem;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><span style="color:#fff;font-weight:600;">Build volume</span><span style="color:var(--muted);"> — Up to 300 × 300 × 400 mm</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.84rem;">
+            <div style="width:28px;height:28px;border-radius:6px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><span style="color:#fff;font-weight:600;">Quality check</span><span style="color:var(--muted);"> — Visual + dimensional on every job</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="visual-img-grid">
+        <div class="vis-card" style="grid-column:span 2;">
+          <div class="vis-card-inner" style="min-height:200px;background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(124,58,237,0.08),rgba(219,39,119,0.05));">
+            <svg width="100%" height="200" viewBox="0 0 560 200" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="vg1" x1="0" y1="0" x2="560" y2="200" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#2563eb" stop-opacity="0.9"/><stop offset=".5" stop-color="#7c3aed" stop-opacity="0.8"/><stop offset="1" stop-color="#db2777" stop-opacity="0.7"/>
+                </linearGradient>
+                <filter id="sf"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <path d="M60,160 L60,80 L120,80 L120,60 L200,60 L200,40 L320,40 L320,60 L380,60 L380,80 L440,80 L440,160 Z" fill="rgba(124,58,237,0.08)" stroke="url(#vg1)" stroke-width="2"/>
+              <circle cx="100" cy="120" r="18" fill="none" stroke="rgba(37,99,235,0.5)" stroke-width="1.5"/>
+              <circle cx="100" cy="120" r="8" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.6)" stroke-width="1"/>
+              <circle cx="400" cy="120" r="18" fill="none" stroke="rgba(219,39,119,0.5)" stroke-width="1.5"/>
+              <circle cx="400" cy="120" r="8" fill="rgba(219,39,119,0.1)" stroke="rgba(219,39,119,0.6)" stroke-width="1"/>
+              <rect x="220" y="65" width="60" height="30" rx="4" fill="rgba(124,58,237,0.08)" stroke="rgba(124,58,237,0.5)" stroke-width="1.5"/>
+              <line x1="60" y1="75" x2="440" y2="75" stroke="rgba(124,58,237,0.12)" stroke-width="0.8" stroke-dasharray="4,6"/>
+              <line x1="60" y1="90" x2="440" y2="90" stroke="rgba(124,58,237,0.12)" stroke-width="0.8" stroke-dasharray="4,6"/>
+              <line x1="60" y1="105" x2="440" y2="105" stroke="rgba(124,58,237,0.12)" stroke-width="0.8" stroke-dasharray="4,6"/>
+              <line x1="60" y1="120" x2="440" y2="120" stroke="rgba(124,58,237,0.12)" stroke-width="0.8" stroke-dasharray="4,6"/>
+              <line x1="60" y1="135" x2="440" y2="135" stroke="rgba(124,58,237,0.12)" stroke-width="0.8" stroke-dasharray="4,6"/>
+              <line x1="60" y1="150" x2="440" y2="150" stroke="rgba(124,58,237,0.12)" stroke-width="0.8" stroke-dasharray="4,6"/>
+              <line x1="60" y1="175" x2="440" y2="175" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+              <line x1="60" y1="170" x2="60" y2="180" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+              <line x1="440" y1="170" x2="440" y2="180" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+              <text x="245" y="188" fill="rgba(124,58,237,0.6)" font-family="monospace" font-size="9" text-anchor="middle">380.0 mm</text>
+              <circle cx="250" cy="50" r="3" fill="rgba(219,39,119,0.8)" filter="url(#sf)"/>
+              <line x1="253" y1="48" x2="270" y2="25" stroke="rgba(219,39,119,0.4)" stroke-width="1"/>
+              <text x="272" y="23" fill="rgba(219,39,119,0.7)" font-family="monospace" font-size="8">M6 × 1.0</text>
+            </svg>
+            <div class="vis-label">
+              <div class="vis-label-text">Precision bracket — production-ready 3D model</div>
+              <div class="vis-label-sub">PETG-CF · 0.15 mm layers · M6 brass inserts</div>
+            </div>
+          </div>
+        </div>
+        <div class="vis-card">
+          <div class="vis-card-inner" style="min-height:160px;background:linear-gradient(135deg,rgba(37,99,235,0.08),rgba(124,58,237,0.06));">
+            <svg width="100%" height="150" viewBox="0 0 240 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="220" height="130" rx="4" fill="rgba(37,99,235,0.06)" stroke="rgba(37,99,235,0.2)" stroke-width="1"/>
+              <rect x="18" y="18" width="70" height="50" rx="3" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.5)" stroke-width="1.5"/>
+              <rect x="96" y="18" width="50" height="50" rx="3" fill="rgba(124,58,237,0.1)" stroke="rgba(124,58,237,0.5)" stroke-width="1.5"/>
+              <circle cx="172" cy="43" r="24" fill="rgba(219,39,119,0.08)" stroke="rgba(219,39,119,0.4)" stroke-width="1.5"/>
+              <circle cx="172" cy="43" r="12" fill="none" stroke="rgba(219,39,119,0.3)" stroke-width="1" stroke-dasharray="2,2"/>
+              <rect x="18" y="76" width="40" height="56" rx="3" fill="rgba(124,58,237,0.08)" stroke="rgba(124,58,237,0.4)" stroke-width="1"/>
+              <rect x="66" y="76" width="80" height="56" rx="3" fill="rgba(37,99,235,0.08)" stroke="rgba(37,99,235,0.4)" stroke-width="1"/>
+              <rect x="154" y="76" width="68" height="56" rx="3" fill="rgba(219,39,119,0.07)" stroke="rgba(219,39,119,0.35)" stroke-width="1"/>
+              <circle cx="220" cy="10" r="4" fill="#db2777" opacity="0.8"/>
+              <line x1="216" y1="14" x2="18" y2="68" stroke="rgba(219,39,119,0.5)" stroke-width="1" stroke-dasharray="3,3"/>
+            </svg>
+            <div class="vis-label">
+              <div class="vis-label-text">Sheet nesting — laser cut</div>
+              <div class="vis-label-sub">3 mm acrylic · full sheet</div>
+            </div>
+          </div>
+        </div>
+        <div class="vis-card">
+          <div class="vis-card-inner" style="min-height:160px;background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(219,39,119,0.06));">
+            <svg width="100%" height="150" viewBox="0 0 240 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs><linearGradient id="rg" x1="120" y1="0" x2="120" y2="150" gradientUnits="userSpaceOnUse"><stop stop-color="#7c3aed" stop-opacity="0.7"/><stop offset="1" stop-color="#db2777" stop-opacity="0.4"/></linearGradient></defs>
+              <rect x="30" y="20" width="180" height="100" rx="6" fill="rgba(124,58,237,0.06)" stroke="rgba(124,58,237,0.25)" stroke-width="1.5"/>
+              <rect x="40" y="28" width="160" height="8" rx="3" fill="rgba(124,58,237,0.3)" stroke="rgba(124,58,237,0.6)" stroke-width="1"/>
+              <circle cx="47" cy="32" r="2.5" fill="rgba(167,139,250,0.40)"/>
+              <circle cx="63" cy="32" r="2.5" fill="rgba(167,139,250,0.55)"/>
+              <circle cx="79" cy="32" r="2.5" fill="rgba(167,139,250,0.40)"/>
+              <circle cx="95" cy="32" r="2.5" fill="rgba(167,139,250,0.55)"/>
+              <circle cx="111" cy="32" r="2.5" fill="rgba(167,139,250,0.40)"/>
+              <circle cx="127" cy="32" r="2.5" fill="rgba(167,139,250,0.55)"/>
+              <circle cx="143" cy="32" r="2.5" fill="rgba(167,139,250,0.40)"/>
+              <circle cx="159" cy="32" r="2.5" fill="rgba(167,139,250,0.55)"/>
+              <circle cx="175" cy="32" r="2.5" fill="rgba(167,139,250,0.40)"/>
+              <circle cx="191" cy="32" r="2.5" fill="rgba(167,139,250,0.55)"/>
+              <!-- gear approximation -->
+              <circle cx="120" cy="75" r="28" fill="rgba(124,58,237,0.1)" stroke="url(#rg)" stroke-width="1.5"/>
+              <circle cx="120" cy="75" r="8" fill="rgba(124,58,237,0.2)" stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+              <rect x="80" y="95" width="80" height="4" rx="2" fill="rgba(255,255,255,0.15)"/>
+            </svg>
+            <div class="vis-label">
+              <div class="vis-label-text">SLA resin — precision gear</div>
+              <div class="vis-label-sub">0.05 mm · engineering resin</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose -->
+<section class="section why-section" id="why">
+  <div class="container">
+    <div class="why-grid">
+      <div>
+        <span class="eyebrow">Why Print Forge</span>
+        <h2>Engineering-minded.<br><span class="grad-text">Not hobbyist.</span></h2>
+        <p style="margin-top:14px;">We approach every job as a fabrication problem to solve — not a print to execute. That means understanding your application, material requirements, and tolerances before we produce anything.</p>
+        <div class="why-list">
+          <div class="why-item"><div class="why-num">01</div><div><h4>Material-first</h4><p>We specify materials based on your environment — UV exposure, heat, chemical contact, load, or flex.</p></div></div>
+          <div class="why-item"><div class="why-num">02</div><div><h4>Practical tolerances</h4><p>Clearances, wall thickness, and layer orientation are chosen for function, not just appearance.</p></div></div>
+          <div class="why-item"><div class="why-num">03</div><div><h4>Fast turnaround</h4><p>Most jobs dispatched within 3–5 working days. Rush jobs considered — ask on enquiry.</p></div></div>
+          <div class="why-item"><div class="why-num">04</div><div><h4>No minimum orders</h4><p>One prototype or fifty production parts — both handled without tooling surcharges.</p></div></div>
+          <div class="why-item"><div class="why-num">05</div><div><h4>File-to-part service</h4><p>Send an STL, DXF, PDF sketch, or photo — we advise from there.</p></div></div>
+          <div class="why-item"><div class="why-num">06</div><div><h4>NZ based</h4><p>No offshore delays. Direct contact with the person running your job.</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="cap-panel">
+          <div class="cap-panel-header">Materials &amp; Capabilities</div>
+          <div class="cap-row"><span class="cap-label">FFF Materials</span><span class="cap-val">PLA · PETG · ASA · ABS · Nylon · TPU · CF-filled</span></div>
+          <div class="cap-row"><span class="cap-label">Resin (SLA)</span><span class="cap-val">Standard · Engineering · Flexible · Castable</span></div>
+          <div class="cap-row"><span class="cap-label">Laser Materials</span><span class="cap-val">Acrylic · Ply · MDF · Cardboard · Leather · Al</span></div>
+          <div class="cap-row"><span class="cap-label">Build volume (FFF)</span><span class="cap-val">Up to 300 × 300 × 400 mm</span></div>
+          <div class="cap-row"><span class="cap-label">Layer resolution</span><span class="cap-val">0.05 mm (SLA) · 0.1–0.3 mm (FFF)</span></div>
+          <div class="cap-row"><span class="cap-label">Finish options</span><span class="cap-val">Raw · Sanded · Primed · Painted · Post-cured</span></div>
+          <div class="cap-row"><span class="cap-label">Turnaround</span><span class="cap-val">3–5 working days standard</span></div>
+          <div class="cap-row"><span class="cap-label">File formats</span><span class="cap-val">STL · OBJ · STEP · DXF · PDF · Sketch/photo</span></div>
+          <div class="cta-mini">
+            <p><strong>Not sure what you need?</strong> Send a description, sketch, or photo of the problem you're trying to solve. We'll come back with options and a quote.</p>
+            <a href="#contact" class="btn btn-primary" style="font-size:0.82rem;padding:11px 20px;">Start with a conversation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="section" style="background:var(--dark3);" id="process">
+  <div class="container">
+    <div class="section-header center">
+      <span class="eyebrow">How It Works</span>
+      <h2>From Brief to Finished Part</h2>
+      <p>A straightforward process — no complicated portals, no guesswork on pricing.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-circle"><div class="step-circle-inner">01</div></div>
+        <h3>Send your brief</h3>
+        <p>Share your STL, DXF, drawing, or description. Photos of the original part are fine.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle"><div class="step-circle-inner">02</div></div>
+        <h3>We advise &amp; quote</h3>
+        <p>We review your job, advise on materials if needed, then send a clear fixed-price quote.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle"><div class="step-circle-inner">03</div></div>
+        <h3>Approve &amp; produce</h3>
+        <p>Once you approve, we schedule and produce to spec — with quality checks throughout.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle"><div class="step-circle-inner">04</div></div>
+        <h3>Deliver or collect</h3>
+        <p>We ship nationwide or you can collect locally. Rush jobs available on request.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Example Jobs -->
+<section class="section jobs-section" style="background:var(--dark);">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Recent Work</span>
+      <h2>Example Jobs</h2>
+      <p>A sample of the types of work we produce for clients across New Zealand.</p>
+    </div>
+    <div class="jobs-grid">
+      <div class="job-card"><h4>HVAC bracket set</h4><p>Custom refrigeration pipe clamps in PETG — 40 units, 3 variants. Delivered in 4 days.</p></div>
+      <div class="job-card"><h4>Architectural site model</h4><p>Multi-part residential development model in PLA — 1:200 scale, 14 components.</p></div>
+      <div class="job-card"><h4>Electronic enclosure</h4><p>Weatherproof IP65-rated ABS enclosure with cable glands and DIN rail mount.</p></div>
+      <div class="job-card"><h4>Replacement impeller</h4><p>Reverse-engineered pump impeller in Nylon — direct fit to original housing.</p></div>
+      <div class="job-card"><h4>Laser-cut acrylic signage</h4><p>Reception logo panel — 3-layer acrylic, engraved and back-lit ready.</p></div>
+      <div class="job-card"><h4>Prototype connector body</h4><p>Pre-tooling sample of a custom electrical connector housing — 3 iterations to final design.</p></div>
+      <div class="job-card"><h4>Builder's jig set</h4><p>Framing jig in PETG for specific stud spacing — 20 units to a construction firm.</p></div>
+      <div class="job-card"><h4>Engraved identification plates</h4><p>Anodised aluminium ID plates for industrial switchgear — batch of 80.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Band -->
+<div class="cta-band">
+  <div class="cta-band-orb-1"></div>
+  <div class="cta-band-orb-2"></div>
+  <span class="eyebrow">Ready to Start?</span>
+  <h2>Have a part in mind?<br><span class="grad-text">Let's talk.</span></h2>
+  <p>Whether you have final files or just an idea — get in touch and we'll work through it with you.</p>
+  <div class="cta-actions">
+    <a href="#contact" class="btn btn-primary btn-lg">Get a Quote</a>
+    <a href="mailto:hello@printforge.co.nz" class="btn btn-outline btn-lg">Email Us Directly</a>
+  </div>
+</div>
+
+<!-- Contact -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Get in Touch</span>
+      <h2>Request a Quote</h2>
+      <p>Fill in the form and we'll get back with a quote or follow-up questions — usually within one business day.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div class="contact-lbl">Email</div><div class="contact-val"><a href="mailto:hello@printforge.co.nz">hello@printforge.co.nz</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="contact-lbl">Location</div><div class="contact-val">New Zealand</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><div class="contact-lbl">Turnaround</div><div class="contact-val">3–5 working days standard</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"/></svg></div>
+          <div><div class="contact-lbl">Existing Clients</div><div class="contact-val"><a href="https://portal.printforge.co.nz/">Access the Client Portal →</a></div></div>
+        </div>
+        <div class="accepts-box">
+          <div class="accepts-title">We accept</div>
+          <div class="accepts-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="3"><defs><linearGradient id="ag" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#2563eb"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><polyline points="20 6 9 17 4 12" stroke="url(#ag)"/></svg>STL files</div>
+          <div class="accepts-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="3"><polyline points="20 6 9 17 4 12" stroke="url(#ag)"/></svg>OBJ / STEP / IGES</div>
+          <div class="accepts-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="3"><polyline points="20 6 9 17 4 12" stroke="url(#ag)"/></svg>DXF / DWG (laser)</div>
+          <div class="accepts-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="3"><polyline points="20 6 9 17 4 12" stroke="url(#ag)"/></svg>PDF drawings</div>
+          <div class="accepts-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="3"><polyline points="20 6 9 17 4 12" stroke="url(#ag)"/></svg>Sketches or photos</div>
+          <div class="accepts-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="3"><polyline points="20 6 9 17 4 12" stroke="url(#ag)"/></svg>Just a description</div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <form action="mailto:hello@printforge.co.nz" method="post" enctype="text/plain">
+          <div class="form-cols">
+            <div class="form-row"><label class="form-label">Your name *</label><input type="text" class="form-input" name="name" placeholder="Jane Smith" required /></div>
+            <div class="form-row"><label class="form-label">Business / organisation</label><input type="text" class="form-input" name="business" placeholder="Acme Ltd" /></div>
+          </div>
+          <div class="form-cols">
+            <div class="form-row"><label class="form-label">Email *</label><input type="email" class="form-input" name="email" placeholder="you@example.com" required /></div>
+            <div class="form-row"><label class="form-label">Phone</label><input type="tel" class="form-input" name="phone" placeholder="+64 21 ..." /></div>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Service needed</label>
+            <select class="form-select" name="service">
+              <option value="">— Select —</option>
+              <option>3D Printing (FFF / FDM)</option>
+              <option>3D Printing (Resin / SLA)</option>
+              <option>Laser Cutting</option>
+              <option>Laser Engraving</option>
+              <option>Custom Design &amp; Print</option>
+              <option>Architectural Model</option>
+              <option>Short-Run Production</option>
+              <option>Not sure — advise me</option>
+            </select>
+          </div>
+          <div class="form-row"><label class="form-label">Describe your job *</label><textarea class="form-textarea" name="description" placeholder="What do you need made? Include dimensions, quantity, material preferences, and intended use if known. You can email files separately." required></textarea></div>
+          <div class="form-row">
+            <label class="form-label">Timeline</label>
+            <select class="form-select" name="timeline">
+              <option value="">— Select —</option>
+              <option>No rush — whenever suits</option>
+              <option>Within 2 weeks</option>
+              <option>Within 1 week</option>
+              <option>Urgent — within 3 days</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg form-submit">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Quote Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <svg width="34" height="28" viewBox="0 0 38 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="flg1" x1="0" y1="0" x2="38" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#2563eb"/><stop offset=".5" stop-color="#7c3aed"/><stop offset="1" stop-color="#db2777"/></linearGradient>
+              <linearGradient id="flg2" x1="0" y1="32" x2="38" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#db2777" stop-opacity="0.6"/><stop offset="1" stop-color="#2563eb" stop-opacity="0.25"/></linearGradient>
+            </defs>
+            <path d="M6 28 L22 16 L6 4" stroke="url(#flg2)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 28 L32 16 L16 4" stroke="url(#flg1)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="logo-wordmark">Print Forge</span>
+        </a>
+        <p>Commercial 3D printing, laser cutting, and custom fabrication for New Zealand businesses. Functional parts, fast.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Services</div>
+        <ul>
+          <li><a href="#services">3D Printing (FFF)</a></li>
+          <li><a href="#services">3D Printing (SLA)</a></li>
+          <li><a href="#services">Laser Cutting</a></li>
+          <li><a href="#services">Custom Brackets</a></li>
+          <li><a href="#services">Architectural Models</a></li>
+          <li><a href="#services">Short-Run Production</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Industries</div>
+        <ul>
+          <li><a href="#applications">HVAC &amp; Refrigeration</a></li>
+          <li><a href="#applications">Construction &amp; Trades</a></li>
+          <li><a href="#applications">Architecture &amp; Design</a></li>
+          <li><a href="#applications">Product Development</a></li>
+          <li><a href="#applications">Engineering</a></li>
+          <li><a href="#applications">Signage</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <ul>
+          <li><a href="#why">About Print Forge</a></li>
+          <li><a href="#process">How It Works</a></li>
+          <li><a href="#contact">Get a Quote</a></li>
+          <li><a href="mailto:hello@printforge.co.nz">Email Us</a></li>
+          <li><a href="https://portal.printforge.co.nz/">Client Portal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Print Forge. All rights reserved. New Zealand.</p>
+      <p style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;">Commercial 3D printing &amp; fabrication</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('mobileMenu');
+  btn.addEventListener('click', () => menu.classList.toggle('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); window.scrollTo({ top: t.offsetTop - 74, behavior: 'smooth' }); }
+    });
+  });
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.style.boxShadow = window.scrollY > 40 ? '0 4px 32px rgba(0,0,0,0.5)' : '';
+  }, { passive: true });
+</script>
 </Layout>
-
-
